@@ -292,8 +292,8 @@
             background: transparent;
             border-radius: 50%;
             animation: pulse 2s infinite;
-            border: 3px solid rgba(233, 30, 99, 0.8);
-            box-shadow: 0 0 10px rgba(233, 30, 99, 0.4);
+            border: 2.5px solid rgba(233, 30, 99, 0.85);
+            box-shadow: 0 0 12px rgba(233, 30, 99, 0.5);
         }
 
         @keyframes pulse {
@@ -1033,19 +1033,24 @@
             updateDashengkuiPositionFromWorld();
         }
         
-        // 从世界坐标更新弹窗屏幕位置
+        // 从世界坐标更新弹窗屏幕位置（固定在屏幕正中央）
         function updateModalPositionFromWorld() {
             const content = document.getElementById('modalContent');
             const scrollContainer = document.getElementById('scrollContainer');
             if (!content || !content.classList.contains('active') || !scrollContainer) return;
             
-            // 世界坐标转屏幕坐标（X轴跟随world移动）
-            const screenX = modalWorldX - currentOffset;
+            const viewportWidth = scrollContainer.clientWidth;
+            const viewportHeight = scrollContainer.clientHeight;
+            
+            // 获取弹窗实际尺寸
+            const contentRect = content.getBoundingClientRect();
+            const modalWidth = contentRect.width || (viewportWidth * 0.7);
+            const modalHeight = contentRect.height || (viewportHeight * 0.7);
+            
+            // X轴固定居中（不随world移动）
+            const screenX = (viewportWidth - modalWidth) / 2;
             
             // Y轴固定居中（不随world移动）
-            const viewportHeight = scrollContainer.clientHeight;
-            const contentRect = content.getBoundingClientRect();
-            const modalHeight = contentRect.height || (viewportHeight * 0.7);
             const screenY = (viewportHeight - modalHeight) / 2;
             
             content.style.left = screenX + 'px';
@@ -1567,19 +1572,24 @@
             document.body.style.overflow = '';
         }
         
-        // 从世界坐标更新大盛魁屏幕位置
+        // 从世界坐标更新大盛魁屏幕位置（固定在屏幕正中央）
         function updateDashengkuiPositionFromWorld() {
             const content = document.getElementById('dashengkuiContent');
             const scrollContainer = document.getElementById('scrollContainer');
             if (!content || !content.classList.contains('active') || !scrollContainer) return;
             
-            // 世界坐标转屏幕坐标（X轴跟随world移动）
-            const screenX = dashengkuiWorldX - currentOffset;
-            
-            // Y轴固定居中
+            const viewportWidth = scrollContainer.clientWidth;
             const viewportHeight = scrollContainer.clientHeight;
+            
+            // 获取大盛魁实际尺寸
             const contentRect = content.getBoundingClientRect();
+            const modalWidth = contentRect.width || (viewportWidth * 0.7);
             const modalHeight = contentRect.height || (viewportHeight * 0.75);
+            
+            // X轴固定居中（不随world移动）
+            const screenX = (viewportWidth - modalWidth) / 2;
+            
+            // Y轴固定居中（不随world移动）
             const screenY = (viewportHeight - modalHeight) / 2;
             
             content.style.left = screenX + 'px';
